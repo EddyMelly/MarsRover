@@ -1,29 +1,18 @@
-const cardinals = ['N', 'E', 'S', 'W'];
-
-module.exports = function newRover(
-  plateauBoundary,
-  startPosition,
-  startOrientation
-) {
-  // constructor(plateauBoundary, startPosition, startOrientation) {
-  //   this.position = startPosition;
-  //   this.orientation = startOrientation;
-  //   this.plateauBoundary = plateauBoundary;
-  // }
+module.exports = function newRover(plateauBoundary, startPosition, cardinals) {
+  var cardinals = cardinals;
   var position = startPosition;
-  var orientation = startOrientation;
   var plateauBoundary = plateauBoundary;
 
   function getPosition() {
     return position;
   }
 
-  function getOrientation() {
-    return orientation;
+  function getPositionOrientationAsString() {
+    return `${position.x} ${position.y} ${position.o}`;
   }
 
   function setOrientation(newOrientation) {
-    orientation = newOrientation;
+    position.o = newOrientation;
   }
 
   function receiveCommand(commandString) {
@@ -44,31 +33,30 @@ module.exports = function newRover(
 
   function turnLeft() {
     const currentOrientation = cardinals.findIndex(
-      (element) => element === orientation
+      (element) => element === position.o
     );
     if (currentOrientation === 0) {
-      orientation = cardinals[cardinals.length - 1];
+      position.o = cardinals[cardinals.length - 1];
     } else {
-      orientation = cardinals[currentOrientation - 1];
+      position.o = cardinals[currentOrientation - 1];
     }
   }
 
   function turnRight() {
     const currentOrientation = cardinals.findIndex(
-      (element) => element === this.orientation
+      (element) => element === position.o
     );
-    console.log(this.orientation);
     if (currentOrientation === 4) {
-      orientation = cardinals[0];
+      position.o = cardinals[0];
     } else {
-      orientation = cardinals[currentOrientation + 1];
+      position.o = cardinals[currentOrientation + 1];
     }
-    return orientation;
+    return position.o;
   }
 
   function moveForward() {
     //move direction dependant on orientation
-    switch (this.orientation) {
+    switch (position.o) {
       case 'N':
         this.position.y = this.position.y + 1;
         break;
@@ -80,6 +68,7 @@ module.exports = function newRover(
         break;
       case 'W':
         this.position.x = this.position.x - 1;
+        break;
     }
   }
 
@@ -89,7 +78,7 @@ module.exports = function newRover(
     turnLeft,
     receiveCommand,
     setOrientation,
-    getOrientation,
     getPosition,
+    getPositionOrientationAsString,
   };
 };
