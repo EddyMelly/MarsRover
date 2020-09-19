@@ -1,0 +1,23 @@
+{
+  "name": "marsrover",
+  "version": "1.0.0",
+  "description": "Mars Rover Technical Test Solution",
+  "main": "index.js",
+  "dependencies": {
+    "jest": "^26.4.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EddyMelly/MarsRover.git"
+  },
+  "author": "Ryan Davis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EddyMelly/MarsRover/issues"
+  },
+  "homepage": "https://github.com/EddyMelly/MarsRover#readme"
+}
