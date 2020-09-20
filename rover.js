@@ -20,21 +20,68 @@ module.exports = function newRover(
     if (cardinals.includes(suggestedOrientation)) position.o = newOrientation;
   }
 
+  //takes string of command characters and instructs rover, reports final position after attempting commands
+  //will stop and report position early if move command directs Rover outside of plateau
   function receiveCommand(commandString) {
-    for (const char of commandString) {
-      switch (char) {
-        case 'L':
-          turnLeft();
+    for (let i = 0; i < commandString.length; i++) {
+      if (commandString.charAt(i) === 'L') {
+        turnLeft();
+      }
+      if (commandString.charAt(i) === 'R') {
+        turnRight();
+      }
+      if (commandString.charAt(i) === 'M') {
+        if (surveyAreaAhead()) {
           break;
-        case 'R':
-          turnRight();
-          break;
-        case 'M':
+        } else {
           moveForward();
-          break;
+        }
       }
     }
     return getPositionOrientationAsString();
+  }
+
+  //function surveys coordinates directly ahead and returns true if outside plateauBoundary
+  function surveyAreaAhead() {
+    let detectCollision;
+    if (position.o === 'N') {
+      detectCollision = collisionDetection({
+        x: position.x,
+        y: position.y + 1,
+      });
+    }
+    if (position.o === 'E') {
+      detectCollision = collisionDetection({
+        x: position.x + 1,
+        y: position.y,
+      });
+    }
+    if (position.o === 'S') {
+      detectCollision = collisionDetection({
+        x: position.x,
+        y: position.y - 1,
+      });
+    }
+    if (position.o === 'W') {
+      detectCollision = collisionDetection({
+        x: position.x - 1,
+        y: position.y,
+      });
+    }
+    return detectCollision;
+  }
+
+  function collisionDetection(proposedNewPosition) {
+    if (
+      proposedNewPosition.x < plateauBoundary.startX ||
+      proposedNewPosition.y < plateauBoundary.startY ||
+      proposedNewPosition.x > plateauBoundary.endX ||
+      proposedNewPosition.y > plateauBoundary.endY
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   //changes orientation of Rover 90 degrees to the Left
@@ -87,5 +134,6 @@ module.exports = function newRover(
     setOrientation,
     getPosition,
     getPositionOrientationAsString,
+    collisionDetection,
   };
 };

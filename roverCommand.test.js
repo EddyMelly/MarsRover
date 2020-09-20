@@ -159,8 +159,9 @@ test('deployAndCommandRover should take an object of starting position and comma
   expect(returnedObject.data).toBe('5 1 E');
 });
 
-test('receiveCommandString should take an string of inputs and return an array of objects with the rover responses', () => {
+test('CHALLENGE -TEST INPUT receiveCommandString should take an string of inputs and return an array of objects with the rover responses ', () => {
   const tempRoverCommand = RoverCommand();
+  tempRoverCommand.setPlateauBoundary('5 5');
   const returnedArrayOfReports = tempRoverCommand.receiveCommandString(
     `1 2 N\nLMLMLMLMM\n3 3 E\nMMRMMRMRRM`
   );
