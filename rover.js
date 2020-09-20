@@ -1,7 +1,11 @@
-module.exports = function newRover(plateauBoundary, startPosition, cardinals) {
-  var cardinals = cardinals;
-  var position = startPosition;
-  var plateauBoundary = plateauBoundary;
+module.exports = function newRover(
+  plateauBoundaryInput,
+  startPosition,
+  givenCardinals
+) {
+  const cardinals = givenCardinals;
+  let position = startPosition;
+  const plateauBoundary = plateauBoundaryInput;
 
   function getPosition() {
     return position;
@@ -12,7 +16,8 @@ module.exports = function newRover(plateauBoundary, startPosition, cardinals) {
   }
 
   function setOrientation(newOrientation) {
-    position.o = newOrientation;
+    let suggestedOrientation = newOrientation.toUpperCase();
+    if (cardinals.includes(suggestedOrientation)) position.o = newOrientation;
   }
 
   function receiveCommand(commandString) {
@@ -29,8 +34,10 @@ module.exports = function newRover(plateauBoundary, startPosition, cardinals) {
           break;
       }
     }
+    return getPositionOrientationAsString();
   }
 
+  //changes orientation of Rover 90 degrees to the Left
   function turnLeft() {
     const currentOrientation = cardinals.findIndex(
       (element) => element === position.o
@@ -42,32 +49,32 @@ module.exports = function newRover(plateauBoundary, startPosition, cardinals) {
     }
   }
 
+  //changes orientation of Rover 90 degrees to the Right
   function turnRight() {
     const currentOrientation = cardinals.findIndex(
       (element) => element === position.o
     );
-    if (currentOrientation === 4) {
+    if (currentOrientation === cardinals.length - 1) {
       position.o = cardinals[0];
     } else {
       position.o = cardinals[currentOrientation + 1];
     }
-    return position.o;
   }
 
+  //Moves position coordinates of rover forward based on orientation
   function moveForward() {
-    //move direction dependant on orientation
     switch (position.o) {
       case 'N':
-        this.position.y = this.position.y + 1;
+        position.y = position.y + 1;
         break;
       case 'E':
-        this.position.x = this.position.x + 1;
+        position.x = position.x + 1;
         break;
       case 'S':
-        this.position.y = this.position.y - 1;
+        position.y = position.y - 1;
         break;
       case 'W':
-        this.position.x = this.position.x - 1;
+        position.x = position.x - 1;
         break;
     }
   }
